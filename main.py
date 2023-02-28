@@ -6,7 +6,6 @@ time_bj = datetime.datetime.today() + datetime.timedelta(hours=8)
 now = time_bj.strftime("%Y-%m-%d %H:%M:%S")
 headers = {'User-Agent': 'MiFit/5.3.0 (iPhone; iOS 14.7.1; Scale/3.00)'}
 
-
 #获取北京时间确定随机步数&启动主函数
 def getBeijinTime():
     user_mi = sys.argv[1]
@@ -16,7 +15,7 @@ def getBeijinTime():
     passwd_list = passwd_mi.split('#')
     if len(user_list) == len(passwd_list):
         for user_mi, passwd_mi in zip(user_list, passwd_list):
-            main(user_mi,passwd_mi,10000, 13000)
+            main(user_mi,passwd_mi,12000, 15000)
             #print(msg_mi)
 
 
