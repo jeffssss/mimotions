@@ -18,7 +18,6 @@ def getBeijinTime():
             main(user_mi,passwd_mi,12000, 15000)
             #print(msg_mi)
 
-
 # 获取登录code
 def get_code(location):
     code_pattern = re.compile("(?<=access=).*?(?=&)")
@@ -28,7 +27,7 @@ def get_code(location):
 
 # 登录
 def login(user, password):
-    url1 = "https://api-user.huami.com/registrations/+86" + user + "/tokens"
+    url1 = "https://api-user.huami.com/registrations/" + user + "/tokens"
     headers = {
         "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.2"
@@ -50,16 +49,23 @@ def login(user, password):
 
     url2 = "https://account.huami.com/v2/client/login"
     data2 = {
+        "allow_registration=": "false",
         "app_name": "com.xiaomi.hm.health",
-        "app_version": "4.6.0",
+        "app_version": "6.3.5",
         "code": f"{code}",
         "country_code": "CN",
         "device_id": "2C8B4939-0CCD-4E94-8CBA-CB8EA6E613A1",
         "device_model": "phone",
+        "dn": "api-user.huami.com%2Capi-mifit.huami.com%2Capp-analytics.huami.com",
         "grant_type": "access_token",
-        "third_name": "huami_phone",
+        "lang": "zh_CN",
+        "os_version": "1.5.0",
+        "source": "com.xiaomi.hm.health",
+        "third_name": "email",
     }
     r2 = requests.post(url2, data=data2, headers=headers).json()
+    print("r2:")
+    print(r2)
     login_token = r2["token_info"]["login_token"]
     print("login_token获取成功！")
     print(login_token)
@@ -91,6 +97,7 @@ def main(_user,_passwd,min_1, max_1):
         return "login fail!"
 
     t = get_time()
+    last_sync_time = int(int(t)/1000 - 360000)
 
     app_token = get_app_token(login_token)
 
@@ -109,7 +116,7 @@ def main(_user,_passwd,min_1, max_1):
         "Content-Type": "application/x-www-form-urlencoded"
     }
 
-    data = f'userid={userid}&last_sync_data_time=1597306380&device_type=0&last_deviceid=DA932FFFFE8816E7&data_json={data_json}'
+    data = f'userid={userid}&last_sync_data_time={last_sync_time}&device_type=0&last_deviceid=DA932FFFFE8816E7&data_json={data_json}'
 
     response = requests.post(url, data=data, headers=head).json()
     print(response)
