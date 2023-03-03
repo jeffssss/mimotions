@@ -37,9 +37,11 @@ def login(user, password):
         "password": f"{password}",
         "redirect_uri": "https://s3-us-west-2.amazonaws.com/hm-registration/successsignin.html",
         "token": "access"
-    }
+    }    
     r1 = requests.post(url1, data=data1, headers=headers, allow_redirects=False)
+    print(r1.headers)
     location = r1.headers["Location"]
+    
     try:
         code = get_code(location)
     except:
